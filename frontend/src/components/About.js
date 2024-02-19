@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const About = (props) => {
 
@@ -7,6 +8,7 @@ const About = (props) => {
       <div className="signup-container mx-auto" id='About' style={{ width: '90%', color: props.mode === 'light' ? 'black' : 'white' }}>
         <div>
           <h1>Welcome to CloudNotes!</h1>
+          <Link to="/sem-3-65d1f26897a258ec8bee1eeb">Sem 3 folder</Link>
           <p>At CloudNotes, we're dedicated to providing you with a seamless and secure platform for storing your notes on the cloud. Our application is designed with simplicity and functionality in mind, allowing you to effortlessly create, update, and delete your notes from any device, anywhere.</p>
         </div>
         <div>

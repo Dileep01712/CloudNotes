@@ -3,8 +3,8 @@ import noteContext from '../context/notes/noteContext';
 
 function NoteItem(props) {
     const context = useContext(noteContext);
-    const { editNote, setPinnedNotes, setNotes, notes, pinnedNotes, setTrashedNotes, trashedNotes } = context;
-    const { note, updateNote, isPinned } = props;
+    const { editNote, setPinnedNotes, setDirectoryContent, directoryContent, pinnedNotes, setTrashedNotes, trashedNotes, formatParentPathName } = context;
+    const { note, updateNote, isPinned, path } = props;
     const [hide, setHide] = useState(false);
     const descriptionRef = useRef(null);
     const titleRef = useRef(null);
@@ -13,7 +13,7 @@ function NoteItem(props) {
         descriptionRef.current.innerHTML = note.description;
         titleRef.current.innerHTML = note.title;
         //eslint-disable-next-line
-    }, [notes, pinnedNotes])
+    }, [directoryContent, pinnedNotes])
 
     const handleMouseEnter = () => {
         setHide(true);
@@ -26,7 +26,7 @@ function NoteItem(props) {
     const handlePinnedNote = async () => {
         await editNote(note._id, note.title, note.description, note.tag, Date.now());
         setPinnedNotes([note, ...pinnedNotes]);
-        setNotes(notes.filter(({_id}) => {
+        setDirectoryContent(directoryContent.filter(({_id}) => {
             return _id !== note._id;
         }))
     }
@@ -36,15 +36,18 @@ function NoteItem(props) {
         setPinnedNotes(pinnedNotes.filter(({_id}) => {
             return _id !== note._id;
         }))
-        setNotes([note, ...notes]);
+
+        if((formatParentPathName(path) === note.parent) || (path === undefined && note.parent === null)){
+            setDirectoryContent([note, ...directoryContent]);
+        }
     }
 
     const moveToTrash = async() => {
         await editNote(note._id, note.title, note.description, note.tag,null, true);
         setTrashedNotes([note, ...trashedNotes]);
-        let temp = notes.filter(({_id}) => _id === note._id);
+        let temp = directoryContent.filter(({_id}) => _id === note._id);
         if(temp.length){
-            setNotes(notes.filter(({_id}) => _id !== note._id));
+            setDirectoryContent(directoryContent.filter(({_id}) => _id !== note._id));
         } else {
             setPinnedNotes(pinnedNotes.filter(({_id}) => _id !== note._id));
         }

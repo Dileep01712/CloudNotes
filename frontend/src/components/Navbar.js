@@ -1,10 +1,13 @@
 import '../App.css';
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import noteContext from '../context/notes/noteContext';
 
 function Navbar(props) {
     let location = useLocation();
     let navigate = useNavigate();
+    let context = useContext(noteContext);
+    const { createFolderRef } = context;
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -27,8 +30,15 @@ function Navbar(props) {
                             <Link className={`nav-link ${location.pathname === "/about" ? "nav-link-active" : ""}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    <div className={`navIcons ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`}>
-                        <i className="fa-solid fa-moon" id="moonIcons" style={{ color: props.mode === 'light' ? 'lightColor' : 'darkColor' }} onClick={props.toggleMode} ></i>
+                    <div className={`navIcons ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} style={{display: 'flex'}}>
+                        <i className="fa-solid fa-moon" id="moonIcons" onClick={props.toggleMode} ></i>
+                        {localStorage.getItem('token') && <>
+                            <i className="fa-solid fa-folder-plus" title="Create folder" style={{ padding: '10px' }} onClick={() => { createFolderRef.current.click(); }}>
+                            </i>
+                            <Link className='nav-link' to="/bin">
+                                <i className="fa-solid fa-eye" title="See Recycle Bin" style={{padding: '10px'}}></i>
+                            </Link>
+                        </>}
                     </div>
                     {!localStorage.getItem('token') ? <form className="d-flex" role="search">
                         <Link className="btn btn-primary mx-1" to="/login" role="button">Sign In</Link>

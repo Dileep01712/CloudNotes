@@ -113,6 +113,16 @@ div:empty:before {
   max-height: 700px;
   overflow: hidden;
 }
+.card-body-folder{
+  border-radius: 5.5px;
+  min-height: 3em !important;
+  max-height: 700px;
+  overflow: hidden;
+  padding: 0.5em;
+}
+.card-body-folder:hover{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
 
 .card-body:hover {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -177,6 +187,15 @@ span {
   justify-content: space-around;
   align-items: center;
   margin: 15px;
+}
+
+.dropdown-item:hover{
+  cursor: pointer;
+  background-color: #22A7F0;
+}
+
+.active-path{
+  background-color: #0979b5;
 }
 
 @media screen and (max-width: 768px) {

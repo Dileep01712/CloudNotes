@@ -22,10 +22,21 @@ const NotesSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    typeName: {
+        type: String,
+        default: "note"
+    },
+    pinnedAt:{
+        type: Date
+    },
+    parent: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null,
+    },
     expireAt: {
         type: Date,
         expires: 1,
     }
-}, {strict: false})
+}, {collection: 'notes'})
 
 module.exports = mongoose.model('Notes', NotesSchema);

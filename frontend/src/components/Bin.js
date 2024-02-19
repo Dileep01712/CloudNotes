@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import noteContext from "../context/notes/noteContext";
 import TrashNoteitem from "./TrashNoteItem";
 
-const Bin = ({ mode, toggleMode, showAlert }) => {
+const Bin = ({ mode, showAlert }) => {
     const context = useContext(noteContext);
     const { trashedNotes, getTrashedNotes } = context;
 
