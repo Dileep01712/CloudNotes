@@ -39,22 +39,21 @@ const TrashNoteitem = ({ note, mode, showAlert }) => {
     }
 
     return (
-        <div className='col-md-4'>
+        <div className='col-md-3 my-2'>
             <div className="cardParent card  my-1" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseExit}>
-                <div className={`card-body ${mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} style={{padding: "0 1.5em 1.5em 1.5em"}}>
-                    <span style={{position: "relative", left: "9em"}} title="Remaining Days">{remainingDays}days</span>
+                <div className={`card-body ${mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`}>
+                    <span className="badge bg-primary">{remainingDays} days</span>
                     <div className="card-title mb-3" contentEditable={false} ref={titleRef}></div>
-                    <hr/>
                     <div className="card-text" contentEditable={false} ref={descriptionRef}></div>
                     <div className={`icons ${mode === 'light' ?
                         'signupContainer-light' : 'signupContainer-dark'}`} style={hide ? {} : {
                             visibility: 'hidden'
                         }}>
-                        <i className="fa-solid fa-trash-can-arrow-up" title="Restore" onClick={restore}></i>
-                        <i className="fa-solid fa-trash mx-3" title="PERMANENTLY DELETE" onClick={(e) => {
+                        <i className="fa-solid fa-trash" title="Delete forever" onClick={(e) => {
                             handleDelete();
                             e.stopPropagation();
                         }}></i>
+                        <i className="fa-solid fa-trash-can-arrow-up" title="Restore" onClick={restore}></i>
                     </div>
                 </div>
             </div>

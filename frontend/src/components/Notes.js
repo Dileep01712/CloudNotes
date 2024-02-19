@@ -38,10 +38,10 @@ function Notes(props) {
         e.preventDefault();
         if (note.etitle.length === 0 && note.edescription.length === 0) {
             deleteNote(note);
-            props.showAlert("deleted Successfully", "success");
+            props.showAlert("Deleted successfully", "success");
         } else {
             editNote(note._id, note.etitle, note.edescription, note.etag)
-            props.showAlert("Updated Successfully", "success");
+            props.showAlert("Updated successfully", "success");
         }
         refClose.current.click();
     }
@@ -87,10 +87,6 @@ function Notes(props) {
                                         document.execCommand("insertText", false, e.clipboardData.getData('text/plain'));
                                     }} />
                                 </div>
-                                <div className="mb-3">
-                                    <label htmlFor="tag" className="form-label">Tag</label>
-                                    <input type="text" className={`form-control ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} id="tag" name="etag" value={note.etag} onChange={onChange} placeholder='Optional' onFocus={(e) => e.target.classList.add('focused')} onBlur={(e) => e.target.classList.remove('focused')} />
-                                </div>
                             </form>
                         </div>
                         <div className="modal-footer">
@@ -100,25 +96,29 @@ function Notes(props) {
                     </div>
                 </div>
             </div>
-            {pinnedNotes.length > 0 && (
-                <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' :
-                    'signupContainer-dark'}`} id='Notes' style={{ width: '95%', boxShadow: 'none' }}>
-                    <div className="row">
-                        <h3 className="my-1 mb-4" style={{ textAlign: 'center', color: props.mode === 'light' ? 'black' : 'white' }}>Pinned</h3>
-                        {pinnedNotes.map((note) => {
-                            return <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={true} />
-                        })}
+            {
+                pinnedNotes.length > 0 && (
+                    <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' :
+                        'signupContainer-dark'}`} id='pinnedNotes' style={{ width: '100%', boxShadow: 'none' }}>
+                        <div className="row">
+                            <h6 className="my-1 mx-3" style={{ color: props.mode === 'light' ? 'black' : 'white' }}>Pinned</h6>
+                            {pinnedNotes.map((note) => {
+                                return <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={true} />
+                            })}
+                        </div>
                     </div>
-                </div>
-            )}
-            <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} id='Notes' style={{ width: '95%', boxShadow: 'none' }}>
+                )
+            }
+            < div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} id='Notes' style={{ width: '100%', boxShadow: 'none' }}>
                 <div className="row">
-                    <h3 className="my-1 mb-4" style={{ textAlign: 'center', color: props.mode === 'light' ? 'black' : 'white' }}>Your Notes</h3>
-                    {notes.map((note) => {
-                        return <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={false} />
-                    })}
+                    {pinnedNotes.length > 0 && (
+                        <h6 className="my-1 mx-3" style={{ color: props.mode === 'light' ? 'black' : 'white' }}>Others</h6>
+                    )}
+                    {notes.map((note) => (
+                        <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={false} />
+                    ))}
                 </div>
-            </div>
+            </div >
         </>
     )
 }

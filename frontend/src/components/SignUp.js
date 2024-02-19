@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 function SignUp(props) {
     const [credentials, setCredentials] = useState({ name: '', email: '', password: '', cpassword: '' })
+    const [focused, setFocused] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     let navigate = useNavigate();
     const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -42,21 +44,30 @@ function SignUp(props) {
                 <h2>Create an Account</h2>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name:</label>
-                    <input type="text" className="form-control" id="name" name='name' value={credentials.name} onChange={onChange} required aria-describedby="emailHelp" />
+                    <input type="text" className={`form-control ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'} ${focused ? 'focused' : ''}`} id="name" name='name' value={credentials.name} onChange={onChange} required aria-describedby="emailHelp" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="email" className="form-label">Email:</label>
-                    <input type="email" className="form-control" id="email" name='email' value={credentials.email} onChange={onChange} required autoComplete="current-email" aria-describedby="emailHelp" />
+                    <label htmlFor="email" className="form-label">Email</label>
+                    <input type="email" className={`form-control ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'} ${focused ? 'focused' : ''}`} id="email" name='email' value={credentials.email} onChange={onChange} autoComplete="current-email" aria-describedby="emailHelp" onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password:</label>
-                    <input type="password" className="form-control" id="password" name='password' value={credentials.password} onChange={onChange} required minLength={8} autoComplete="current-password" />
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <div className="input-group">
+                        <input type={showPassword ? 'text' : 'password'} className={`form-control ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'
+                            } ${focused ? 'focused' : ''}`} id="password" name="password" value={credentials.password} onChange={onChange} required minLength={8}
+                            autoComplete="current-password" onFocus={() => setFocused(true)}
+                            onBlur={() => setFocused(false)} />
+                        <button type="button" className={`btn btn-light ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'
+                            } ${focused ? 'focused' : ''}`} id='showButton' onClick={() => setShowPassword(!showPassword)} >
+                            <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} id='showPassword' />
+                        </button>
+                    </div>
                 </div>
                 <div className="form-group">
                     <span htmlFor="terms-text" id="terms-text">By creating an account, you agree to CloudNotes <a href="/#" id="privacy-policy-link">Privacy Policy</a> and <a href="/#" id="terms-of-use-link">Terms of Use</a>.</span>
                 </div>
                 <div className='button-container my-3'>
-                    <button type="submit" className="btn btn-primary mx-2">Sign Up</button>
+                    <button type="submit" className="btn btn-primary" id='signupButton'>Sign Up</button>
                 </div>
                 <div className="form-group">
                     <span htmlFor="terms-text" id="term-text">Already have an account? <Link to="/login"

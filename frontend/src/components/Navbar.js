@@ -12,8 +12,8 @@ function Navbar(props) {
     }
 
     return (
-        <nav className={`navbar navbar-expand-lg border-bottom border-2`}>
-            <div className={`container-fluid ${props.mode === 'light' ? 'container-light' : 'container-dark'}`}>
+        <nav className="navbar navbar-expand-lg">
+            <div className="container-fluid">
                 <Link className="navbar-brand" to="/">CloudNotes</Link>
                 <button className="navbar-toggler  bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -24,15 +24,22 @@ function Navbar(props) {
                             <Link className={`nav-link ${location.pathname === "/" ? "nav-link-active" : ""}`} to="/">Home</Link>
                         </li>
                         <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname === "/folder" ? "nav-link-active" : ""}`} to="/folder">Create Folder</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname === "/bin" ? "nav-link-active" : ""}`} to="/bin">Trash</Link>
+                        </li>
+                        
+                        <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/about" ? "nav-link-active" : ""}`} to="/about">About</Link>
                         </li>
                     </ul>
-                    <div className={`navIcons ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`}>
-                        <i className="fa-solid fa-moon" id="moonIcons" style={{ color: props.mode === 'light' ? 'lightColor' : 'darkColor' }} onClick={props.toggleMode} ></i>
+                    <div className="navIcons mx-2">
+                        <i className="fa-solid fa-moon" id="moonIcons" onClick={props.toggleMode} ></i>
                     </div>
                     {!localStorage.getItem('token') ? <form className="d-flex" role="search">
                         <Link className="btn btn-primary mx-1" to="/login" role="button">Sign In</Link>
-                        <Link className="btn btn-primary mx-1" to="/signup" role="button">Sign Up</Link>
+                        <Link className="btn btn-primary mx-3" to="/signup" role="button">Sign Up</Link>
                     </form> : <button className="btn btn-primary mx-1" onClick={handleLogout}>Sign Out</button>}
                 </div>
             </div>
