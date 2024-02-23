@@ -47,7 +47,7 @@ function Login(props) {
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
-                    <div className="input-group">
+                    <div className="input-group" id='passwordField'>
                         <input type={showPassword ? 'text' : 'password'} className={`form-control ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'
                             } ${focused ? 'focused' : ''}`} id="password" name="password" value={credentials.password} onChange={onChange} required minLength={8}
                             autoComplete="current-password" onFocus={() => setFocused(true)}

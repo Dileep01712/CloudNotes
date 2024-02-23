@@ -1,14 +1,26 @@
 import '../App.css';
-import React from 'react'
+import React, { useContext, useRef } from 'react'
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import noteContext from '../context/notes/noteContext';
 
 function Navbar(props) {
     let location = useLocation();
     let navigate = useNavigate();
+    let context = useContext(noteContext);
+    const folderIconRef = useRef(null);
+    const { createFolderRef } = context;
 
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
+    }
+
+    const handleCreateFolderClick = () => {
+        // Access the div with id 'folderIcon' using the ref
+        if (folderIconRef.current) {
+            console.log(folderIconRef.current);
+            // Do whatever you want with the div
+        }
     }
 
     return (
@@ -24,12 +36,9 @@ function Navbar(props) {
                             <Link className={`nav-link ${location.pathname === "/" ? "nav-link-active" : ""}`} to="/">Home</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === "/folder" ? "nav-link-active" : ""}`} to="/folder">Create Folder</Link>
-                        </li>
-                        <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/bin" ? "nav-link-active" : ""}`} to="/bin">Trash</Link>
                         </li>
-                        
+
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/about" ? "nav-link-active" : ""}`} to="/about">About</Link>
                         </li>
@@ -42,8 +51,8 @@ function Navbar(props) {
                         <Link className="btn btn-primary mx-3" to="/signup" role="button">Sign Up</Link>
                     </form> : <button className="btn btn-primary mx-1" onClick={handleLogout}>Sign Out</button>}
                 </div>
-            </div>
-        </nav>
+            </div >
+        </nav >
     )
 }
 

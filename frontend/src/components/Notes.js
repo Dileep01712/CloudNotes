@@ -2,45 +2,72 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import noteContext from '../context/notes/noteContext';
 import NoteItem from './NoteItem';
 import AddNote from './AddNote';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Notes(props) {
     const context = useContext(noteContext);
-    const { notes, getNotes, editNote, deleteNote, pinnedNotes, getPinnedNotes } = context;
+    const { directoryId } = useParams();
+    const { editNote, deleteNote, pinnedNotes, getPinnedNotes, directoryContent, getDirectoryContent, breadCrumbPath, setBreadCrumbPath, getPath, setCurrentFolderName, getAllFolderPaths } = context;
     let navigate = useNavigate();
     const descriptionRef = useRef("");
     const titleRef = useRef("");
-    const [note, setNote] = useState({ _id: "", etitle: "", edescription: "", etag: "" })
+    const [note, setNote] = useState({ _id: "", etitle: "", edescription: "", etag: "", parentName: "" })
     const ref = useRef(null);
     const refClose = useRef(null);
     const [isDisabledUpdate, setIsDisabledUpdate] = useState(true)
-    const { mode, toggleMode } = props;
+    // eslint-disable-next-line
+    const [allFoldersPath, setAllFoldersPath] = useState([]);
+    const { mode } = props;
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            getNotes();
-            getPinnedNotes();
-        }
-        else {
-            navigate('/signup');
-        }
+        (
+            async () => {
+                if (localStorage.getItem('token')) {
+                    getPinnedNotes();
+                    if (directoryId !== undefined) {
+                        let arr = directoryId.split('-');
+                        let objectId = arr[arr.length - 1];
+                        let temp = await getPath(objectId);
+                        if (breadCrumbPath.length === 0) {
+                            setBreadCrumbPath([{
+                                name: 'Home',
+                                url: ''
+                            }, ...temp]);
+                        }
+                        setCurrentFolderName(temp[temp.length - 1].name);
+                    } else {
+                        setBreadCrumbPath([]);
+                    }
+                }
+                else {
+                    navigate('/signup');
+                }
+            }
+        )();
         // eslint-disable-next-line
     }, [])
 
-    const updateNote = (currentNote) => {
+    useEffect(() => {
+        getDirectoryContent(directoryId);
+        // eslint-disable-next-line
+    }, [directoryId]);
+
+    const updateNote = async (currentNote) => {
         ref.current.click();
         setNote({ _id: currentNote._id, etitle: currentNote.title, edescription: currentNote.description, etag: currentNote.tag })
         descriptionRef.current.innerHTML = currentNote.description;
         titleRef.current.innerHTML = currentNote.title;
+        const paths = await getAllFolderPaths();
+        setAllFoldersPath(paths);
     }
 
-    const handleClick = (e) => {
+    const handleClick = async (e) => {
         e.preventDefault();
         if (note.etitle.length === 0 && note.edescription.length === 0) {
-            deleteNote(note);
+            await deleteNote(note);
             props.showAlert("Deleted successfully", "success");
         } else {
-            editNote(note._id, note.etitle, note.edescription, note.etag)
+            await editNote(note._id, note.etitle, note.edescription, note.etag, null, null, note.parentName)
             props.showAlert("Updated successfully", "success");
         }
         refClose.current.click();
@@ -51,20 +78,21 @@ function Notes(props) {
         setIsDisabledUpdate(true);
     }
 
+    // eslint-disable-next-line
     const onChange = (e) => {
-        setIsDisabledUpdate(false);
+        // setIsDisabledUpdate(false);
         setNote({ ...note, [e.target.name]: e.target.value })
     }
 
     const handleContentChange = (e) => {
         const cleanedContent = e.target.innerHTML.replace(/&nbsp;/g, " ").trim();
         setNote({ ...note, [e.target.getAttribute('name')]: cleanedContent });
-        setIsDisabledUpdate(false);
+        // setIsDisabledUpdate(false);
     };
 
     return (
-        <>
-            <AddNote showAlert={props.showAlert} mode={mode} toggleMode={toggleMode} />
+        <div>
+            <AddNote showAlert={props.showAlert} mode={mode} path={directoryId} />
             <button type="button" className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal" ref={ref}></button>
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" >
@@ -96,30 +124,34 @@ function Notes(props) {
                     </div>
                 </div>
             </div>
-            {
-                pinnedNotes.length > 0 && (
-                    <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' :
-                        'signupContainer-dark'}`} id='pinnedNotes' style={{ width: '100%', boxShadow: 'none' }}>
-                        <div className="row">
-                            <h6 className="my-1 mx-3" style={{ color: props.mode === 'light' ? 'black' : 'white' }}>Pinned</h6>
-                            {pinnedNotes.map((note) => {
-                                return <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={true} />
-                            })}
-                        </div>
+            {pinnedNotes.length > 0 && (
+                <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' :
+                    'signupContainer-dark'}`} id='pinnedNotes' style={{ width: '100%', boxShadow: 'none' }}>
+                    <div className="row">
+                        <h6 className="my-1 mx-3" style={{ color: props.mode === 'light' ? 'black' : 'white' }}>Pinned</h6>
+                        {pinnedNotes.map((note) => {
+                            return <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} isPinned={true} path={directoryId} />
+                        })}
                     </div>
-                )
-            }
-            < div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} id='Notes' style={{ width: '100%', boxShadow: 'none' }}>
+                </div>
+            )}
+
+            <div className={`signup-container ${props.mode === 'light' ? 'signupContainer-light' : 'signupContainer-dark'}`} id='Notes' style={{ width: '100%', boxShadow: 'none' }}>
                 <div className="row">
                     {pinnedNotes.length > 0 && (
                         <h6 className="my-1 mx-3" style={{ color: props.mode === 'light' ? 'black' : 'white' }}>Others</h6>
                     )}
-                    {notes.map((note) => (
-                        <NoteItem note={note} key={note._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} toggleMode={toggleMode} isPinned={false} />
-                    ))}
+
+                    {directoryContent.map((item) => {
+                        // item can be note or folder depends on item.typeName
+                        if (item.typeName === 'note') {
+                            return <NoteItem note={item} key={item._id} showAlert={props.showAlert} updateNote={updateNote} mode={mode} isPinned={false} path={directoryId} />
+                        }
+                        return <></>
+                    })}
                 </div>
-            </div >
-        </>
+            </div>
+        </div>
     )
 }
 
