@@ -51,8 +51,6 @@ router.post('/createuser', [
         success = true;
         res.json({ success, authtoken });
 
-        // Return success message and the created user
-        // res.json({ message: "Data inserted successfully!", user });
     } catch (error) {
         // Log and handle any unexpected errors
         console.error(error.message);

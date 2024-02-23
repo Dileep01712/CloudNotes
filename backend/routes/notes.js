@@ -98,12 +98,6 @@ router.post('/addnote', fetchuser, [
     })
 
 // ROUTE 3: Update an existing Note using: PUT "/api/notes/updatenote". Login required
-/*
-    pinnedAt = {
-        status: true|false,
-        value: status ? Date.Now() : undefined 
-    }
-*/
 router.put('/updatenote/:id', fetchuser, async (req, res) => {
     const { title, description, tag, pinnedAt, expireAt, parentName } = req.body;
     try {
