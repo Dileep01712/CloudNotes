@@ -1,0 +1,556 @@
+.navbar {
+  background-color: #202124;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+  margin-bottom: 7px;
+}
+
+.navbar-brand {
+  font-size: 25px !important;
+  font-weight: bold;
+  color: white !important;
+}
+
+.nav-link {
+  font-size: 17px;
+  font-weight: 500;
+  color: white !important;
+}
+
+.nav-link-active {
+  color: rgb(13 110 253) !important;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+#moonIcons {
+  font-size: 35px;
+  opacity: 1;
+  margin: 0 !important;
+}
+
+#moonIcons:hover {
+  background-color: #202124;
+}
+
+.alert {
+  height: 60px;
+  width: 342px;
+  margin-right: 9.2px;
+  z-index: 1;
+  opacity: 1;
+}
+
+.signup-container {
+  border-radius: 8px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  width: 30%;
+  max-width: 100%;
+  margin: auto;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.signupContainer-light,
+.signupContainer-light.focused {
+  color: black;
+  background-color: white;
+}
+
+.signupContainer-dark,
+.signupContainer-dark.focused {
+  color: white;
+  background-color: #202124;
+}
+
+.signup-form {
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.signup-form h2 {
+  margin: 5px;
+  text-align: center !important;
+}
+
+#About {
+  padding: 1.3rem;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+label {
+  display: block;
+  margin: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 7px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: gray !important;
+}
+
+div:empty:before {
+  content: attr(data-placeholder);
+  color: gray;
+}
+
+.col-md-3 {
+  padding: 0;
+  margin: 7px;
+  width: 23%;
+}
+
+.card-body {
+  border-radius: 5px;
+  min-height: 120px !important;
+  overflow: hidden;
+}
+
+.card-body:hover {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+
+.card-title {
+  margin-bottom: 1rem !important;
+  margin-right: 1rem !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card-text {
+  min-height: 24px;
+  max-height: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 16;
+  -webkit-box-orient: vertical;
+  font-size: 15px;
+}
+
+.card-text:last-child {
+  margin-bottom: 15px;
+}
+
+#description {
+  min-height: 80px;
+}
+
+#pinnedNotes,
+#Notes {
+  position: relative;
+  left: 2%;
+}
+
+#folderIcon {
+  width: 20%;
+  max-height: 335px;
+}
+
+.fa-folder-plus {
+  opacity: 1 !important;
+  font-size: 45px;
+  background-color: transparent !important;
+}
+
+#faFolder {
+  margin: 0px !important;
+  padding: 0 !important;
+}
+
+#createFolder {
+  width: 100%;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#createFolder p {
+  margin: 2px !important;
+}
+
+.icons {
+  position: absolute;
+  bottom: 0;
+  height: 41px;
+  width: 100%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  padding-bottom: 1px;
+  border-radius: 5px;
+}
+
+.fa-thumbtack {
+  position: absolute;
+  top: 0.63rem;
+  right: 0.2rem;
+}
+
+.fa-solid {
+  margin: 2px !important;
+  padding: 5px;
+  opacity: 0.87;
+}
+
+.fa-solid:hover {
+  opacity: 1;
+  cursor: pointer;
+  background-color: rgba(95, 99, 104, 0.157);
+  border-radius: 20%;
+}
+
+#iconsGroup {
+  font-size: 30px;
+}
+
+.emptyTrash {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#emptyTrash {
+  font-size: 90px;
+  background-color: transparent;
+  opacity: 0.7;
+  cursor: auto;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 5px;
+}
+
+span {
+  display: block;
+  text-align: center;
+  font-size: 15px;
+}
+
+#terms-text {
+  margin: 18px 0;
+  font-size: 13px;
+}
+
+#showButton {
+  width: 40px;
+  padding: 0;
+  background-color: transparent !important;
+}
+
+#showButton,
+#password {
+  border: 0px;
+}
+
+#passwordField {
+  border-radius: 5px;
+  outline: 1px solid #dee2e6;
+}
+
+#passwordField:focus-within {
+  outline: 1px solid #86b7fe !important;
+}
+
+.fa-eye,
+.fa-eye-slash {
+  background-color: transparent !important;
+  opacity: 1;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 15px 0;
+}
+
+#signupButton,
+#signinButton {
+  width: 100%;
+  margin: 0 !important;
+}
+
+.modal-content {
+  position: relative;
+  top: 35px;
+}
+
+.folderContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow-y: auto;
+  height: 220px;
+  max-height: 320px;
+}
+
+.folderContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.folderContainer::-webkit-scrollbar-track {
+  background: #626466;
+}
+
+.folderContainer::-webkit-scrollbar-thumb {
+  background-color: #0d6efd;
+  border-radius: 10px;
+}
+
+.col-folder {
+  width: 100px;
+}
+
+.card-body-folder {
+  min-height: 85px;
+  max-height: 120px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+
+.folderTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  padding: 2px;
+  margin: 0 15px 7px 3px !important;
+}
+
+.verticalIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 1px;
+}
+
+.fa-ellipsis-vertical:hover {
+  background-color: transparent;
+  border-radius: 0;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.optionsList {
+  position: relative;
+  top: 12px;
+  margin: 0;
+}
+
+.listItems>div {
+  display: flex;
+  align-items: center;
+}
+
+
+li {
+  list-style: none;
+  cursor: pointer;
+}
+
+.card-body-folder {
+  position: relative;
+}
+
+.optionsList {
+  position: absolute;
+  top: 25px;
+  left: 2.3px;
+  bottom: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 5px;
+  height: 92px;
+}
+
+.verticalIcon:hover+.optionsList,
+.optionsList:hover {
+  display: block;
+}
+
+.fa-folder {
+  opacity: 1 !important;
+  font-size: 50px;
+  padding: 2px;
+  width: fit-content;
+}
+
+.fa-folder:hover {
+  background-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .Container {
+    display: grid !important;
+  }
+
+  #folderIcon {
+    order: 2;
+    position: relative;
+    top: 7%;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  .col-folder {
+    width: 125px;
+  }
+
+  .container {
+    margin-top: 15px !important;
+    padding: 0;
+  }
+
+  .alert {
+    opacity: 0.9;
+  }
+
+  .signup-container {
+    width: 95% !important;
+  }
+
+  #SignUp {
+    margin: 10px !important;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .col-md-3 {
+    width: 100%;
+    margin: 0;
+  }
+
+  .card-body {
+    box-shadow: none !important;
+    position: relative;
+  }
+
+  .navIcons {
+    visibility: visible !important;
+    margin-left: -5px !important;
+    margin-bottom: 17px;
+  }
+
+  .icons,
+  .navIcons:hover {
+    cursor: none;
+  }
+
+  #addNote {
+    height: 100%;
+    width: 95% !important;
+  }
+
+  #Notes {
+    height: 100%;
+    width: 95% !important;
+    padding: 0;
+    margin-bottom: 0.7rem !important;
+  }
+
+  .noteItem {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100%;
+    margin: 7px 0;
+  }
+
+  #About {
+    height: 100%;
+    padding: 1rem;
+    margin-bottom: 1.2rem !important;
+  }
+
+  #pinnedNotes,
+  #Notes {
+    position: relative;
+    left: 0%;
+  }
+
+  #pinnedNotes {
+    padding: 0;
+    margin-bottom: 1rem !important;
+  }
+
+  .icons {
+    visibility: visible !important;
+    position: absolute;
+    height: auto;
+    padding-left: 8px;
+  }
+
+  .fa-solid {
+    visibility: visible !important;
+  }
+
+  .fa-solid:hover {
+    opacity: 1;
+    background-color: transparent;
+  }
+
+  .form-label {
+    margin-bottom: 2px;
+  }
+
+  .emptyTrash {
+    top: 145px !important;
+  }
+
+  #emptyTrash {
+    opacity: 1;
+  }
+
+  .binTitle {
+    padding: 0;
+    font-size: 19px;
+  }
+
+  .my-1 {
+    width: 100%;
+    margin: 0 !important;
+    padding: 0;
+  }
+
+  #terms-text {
+    font-size: 15px;
+  }
+
+  .mx-1 {
+    margin-left: 0 !important;
+    /* Log out button*/
+  }
+
+  .modal-content {
+    margin-top: 70px;
+  }
+}

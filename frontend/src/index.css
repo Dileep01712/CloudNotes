@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  font-family: 'Signika Negative';
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+i {
+  cursor: pointer;
+}
