@@ -1,19 +1,42 @@
 const jwt = require('jsonwebtoken');
-const JWT_KEY = 'mynameisdileep';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'thisistestjwt';
 
 const fetchuser = (req, res, next) => {
-    // Get the user from the jwt token and add id to req object
     const token = req.header('auth-token');
+
     if (!token) {
-        return res.status(401).send({ error: 'Please authenticate using a valid token' });
+        return res.status(401).json({
+            success: false,
+            error: 'Access denied. No token provided.'
+        });
     }
-    
+
     try {
-        const data = jwt.verify(token, JWT_KEY);
-        req.user = data.user;
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        const res =req.user = decoded.user;
         next();
+
     } catch (error) {
-        res.status(401).send({ error: 'Please authenticate using a valid token' });
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({
+                success: false,
+                error: 'Invalid token. Please authenticate again.'
+            });
+        }
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                error: 'Token expired. Please log in again.'
+            });
+        }
+
+        return res.status(401).json({
+            success: false,
+            error: 'Authentication failed. Please provide a valid token.'
+        });
     }
-}
+};
+
 module.exports = fetchuser;

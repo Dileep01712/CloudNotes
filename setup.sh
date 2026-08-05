@@ -9,6 +9,6 @@ cd ../frontend
 # Create .env file in frontend folder if it doesn't exist
 if [ ! -f ".env" ]; then
     touch .env
-    echo "REACT_APP_SERVER_URL=https://cloudnotes-u5s9.onrender.com" > .env
+    echo "VITE_SERVER_URL=https://cloudnotes-u5s9.onrender.com" > .env
 fi
 npm install
