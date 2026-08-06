@@ -7,9 +7,6 @@ const nodemailer = require('nodemailer');
 const Otp = require("../models/Otp");
 const jwt = require('jsonwebtoken');
 
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first');
-
 const JWT_SECRET = process.env.JWT_SECRET || 'thisistestjwt';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh_secret';
 const isProd = process.env.NODE_ENV === 'production';
