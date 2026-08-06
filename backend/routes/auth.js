@@ -3,8 +3,6 @@ const router = express.Router();
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const fetchuser = require('../middleware/fetchuser');
-const nodemailer = require('nodemailer');
-const dns = require('dns').promises;
 const Otp = require("../models/Otp");
 const jwt = require('jsonwebtoken');
 
@@ -12,30 +10,32 @@ const JWT_SECRET = process.env.JWT_SECRET || 'thisistestjwt';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh_secret';
 const isProd = process.env.NODE_ENV === 'production';
 
-let cachedTransporter = null;
-let cachedAt = 0;
+const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const BREVO_SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL;
+const BREVO_SENDER_NAME = process.env.BREVO_SENDER_NAME || 'CloudNotes Security';
 
-async function getTransporter() {
-    if (cachedTransporter && Date.now() - cachedAt < 10 * 60 * 1000) {
-        return cachedTransporter;
+async function sendEmail({ to, subject, html }) {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+            'api-key': BREVO_API_KEY,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            sender: { name: BREVO_SENDER_NAME, email: BREVO_SENDER_EMAIL },
+            to: [{ email: to }],
+            subject,
+            htmlContent: html,
+        }),
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Brevo API error (${response.status}): ${errorBody}`);
     }
 
-    const [ipv4] = await dns.resolve4('smtp.gmail.com');
-
-    cachedTransporter = nodemailer.createTransport({
-        host: ipv4,
-        port: 465,
-        secure: true,
-        tls: {
-            servername: 'smtp.gmail.com',
-        },
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
-    });
-    cachedAt = Date.now();
-    return cachedTransporter;
+    return response.json();
 }
 
 const handleValidationErrors = (req, res) => {
@@ -164,7 +164,6 @@ router.post('/send-otp', [
         });
 
         const mailOptions = {
-            from: `"CloudNotes Security" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: `CloudNotes Verification Code - ${otp}`,
             html: `
@@ -202,8 +201,7 @@ router.post('/send-otp', [
                  `
         };
 
-        const transporter = await getTransporter();
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
 
         res.status(200).json({
             success: true,
@@ -379,7 +377,6 @@ router.post('/forgot-password', [
         });
 
         const mailOptions = {
-            from: `"CloudNotes Security" <${process.env.EMAIL_USER}>`,
             to: email,
             subject: `CloudNotes Account Recovery Code - ${otp}`,
             html: `
@@ -403,8 +400,7 @@ router.post('/forgot-password', [
             `
         };
 
-        const transporter = await getTransporter();
-        await transporter.sendMail(mailOptions);
+        await sendEmail(mailOptions);
 
         res.status(200).json({
             success: true,
