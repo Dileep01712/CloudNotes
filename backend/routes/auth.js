@@ -4,6 +4,7 @@ const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const fetchuser = require('../middleware/fetchuser');
 const nodemailer = require('nodemailer');
+const dns = require('dns').promises;
 const Otp = require("../models/Otp");
 const jwt = require('jsonwebtoken');
 
@@ -11,16 +12,31 @@ const JWT_SECRET = process.env.JWT_SECRET || 'thisistestjwt';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'refresh_secret';
 const isProd = process.env.NODE_ENV === 'production';
 
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    family: 4,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+let cachedTransporter = null;
+let cachedAt = 0;
+
+async function getTransporter() {
+    if (cachedTransporter && Date.now() - cachedAt < 10 * 60 * 1000) {
+        return cachedTransporter;
+    }
+
+    const [ipv4] = await dns.resolve4('smtp.gmail.com');
+
+    cachedTransporter = nodemailer.createTransport({
+        host: ipv4,
+        port: 465,
+        secure: true,
+        tls: {
+            servername: 'smtp.gmail.com',
+        },
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS,
+        },
+    });
+    cachedAt = Date.now();
+    return cachedTransporter;
+}
 
 const handleValidationErrors = (req, res) => {
     const errors = validationResult(req);
@@ -186,6 +202,7 @@ router.post('/send-otp', [
                  `
         };
 
+        const transporter = await getTransporter();
         await transporter.sendMail(mailOptions);
 
         res.status(200).json({
@@ -386,6 +403,7 @@ router.post('/forgot-password', [
             `
         };
 
+        const transporter = await getTransporter();
         await transporter.sendMail(mailOptions);
 
         res.status(200).json({
