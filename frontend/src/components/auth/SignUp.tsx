@@ -310,6 +310,7 @@ export default function SignUp({ showAlert }: SignUpProps) {
                             </div>
 
                             <Button
+                                type="button"
                                 disabled={verifying || sending || otp.length < 6}
                                 className="h-9 sm:h-10 md:h-11 w-full cursor-pointer bg-zinc-950 text-white font-medium rounded-xl transition-all hover:bg-zinc-800 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
