@@ -145,8 +145,7 @@ export default function FolderDropdownMenu({
                                             ? 'ring-2 ring-offset-2 ring-zinc-300 scale-110'
                                             : 'ring-0'
                                         }
-                                    `}
-                                    />
+                                    `}/>
 
                                     <p className="text-xs font-semibold text-zinc-400 capitalize mt-2 group-hover/col:text-black transition-colors select-none">
                                         {color.id}
@@ -168,16 +167,13 @@ export default function FolderDropdownMenu({
                             }}
                             className={`flex w-full items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium cursor-pointer ${item.className}`}
                         >
-                            <FontAwesomeIcon
-                                icon={item.icon}
-                                className={`w-4 ${item.iconClassName}`}
-                            />
+                            <FontAwesomeIcon icon={item.icon} className={`w-4 ${item.iconClassName}`} />
                             {item.label}
                         </Button>
                     ))}
 
                     <p className="border-t" />
-                    
+
                     <Button
                         variant="ghost"
                         onClick={(e) => {
@@ -186,10 +182,7 @@ export default function FolderDropdownMenu({
                         }}
                         className={`flex w-full items-center justify-start gap-3 rounded-md px-3 py-2 text-sm font-medium cursor-pointer ${deleteItem.className}`}
                     >
-                        <FontAwesomeIcon
-                            icon={deleteItem.icon}
-                            className={`w-4 ${deleteItem.iconClassName}`}
-                        />
+                        <FontAwesomeIcon icon={deleteItem.icon} className={`w-4 ${deleteItem.iconClassName}`} />
                         {deleteItem.label}
                     </Button>
                 </div>

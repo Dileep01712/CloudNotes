@@ -206,6 +206,10 @@ export default function ForgotPassword({ showAlert }: ForgotPasswordProps) {
                             <p className="mt-1 text-sm text-zinc-500 font-medium">
                                 This code expires in <span className="text-zinc-900 font-semibold">5 minutes</span>.
                             </p>
+
+                            <p className="mt-3 text-sm text-zinc-600 font-medium bg-zinc-50 inline-block px-3 py-1 rounded-md border border-zinc-200">
+                                Didn't receive it? Please check your <span className="text-zinc-900 font-semibold">spam</span> or <span className="text-zinc-900 font-semibold">junk</span> folder.
+                            </p>
                         </div>
 
                         <form className="flex flex-col items-center w-full" onSubmit={handleConfirmReset}>
@@ -230,6 +234,7 @@ export default function ForgotPassword({ showAlert }: ForgotPasswordProps) {
                                     <input
                                         type={showPassword ? "text" : "password"}
                                         id="newPassword"
+                                        autoComplete="new-password"
                                         placeholder="Min. 8 characters"
                                         minLength={8}
                                         value={newPassword}
@@ -237,6 +242,7 @@ export default function ForgotPassword({ showAlert }: ForgotPasswordProps) {
                                         className="h-9 sm:h-10 md:h-11 w-full rounded-xl border border-zinc-200 bg-white px-4 pr-12 text-sm outline-none transition-all focus:border-zinc-900 focus:ring-4 focus:ring-zinc-100 placeholder:text-zinc-300 font-medium text-zinc-800"
                                         required
                                     />
+
                                     <Button
                                         variant="ghost"
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition cursor-pointer"

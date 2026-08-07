@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 connectToMongo();
 
-app.set("trust proxy", 1);
+app.set("trust proxy", true);
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));

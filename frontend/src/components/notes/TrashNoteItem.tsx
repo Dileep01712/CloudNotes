@@ -47,8 +47,7 @@ export default function TrashNoteItem({
                 </h3>
 
                 {note.tag && (
-                    <span
-                        className="inline-flex max-w-22 items-center rounded-full bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600 select-none"
+                    <span className="inline-flex max-w-22 items-center rounded-full bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600 select-none"
                         title={note.tag}
                     >
                         <span className="truncate min-w-0">
@@ -79,9 +78,7 @@ export default function TrashNoteItem({
                         variant="ghost"
                         title="Restore note"
                     >
-                        <FontAwesomeIcon
-                            icon={faRotate}
-                        />
+                        <FontAwesomeIcon icon={faRotate} />
                     </Button>
 
                     <Button
@@ -90,9 +87,7 @@ export default function TrashNoteItem({
                         variant="ghost"
                         title="Delete forever"
                     >
-                        <FontAwesomeIcon
-                            icon={faTrash}
-                        />
+                        <FontAwesomeIcon icon={faTrash} />
                     </Button>
                 </div>
             </div>

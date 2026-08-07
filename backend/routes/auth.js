@@ -112,6 +112,9 @@ router.post('/create-user', [
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
 
+        user.refreshToken = refreshToken;
+        await user.save();
+
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: isProd,

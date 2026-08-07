@@ -96,6 +96,31 @@ export const useNotesState = (
         description?: string,
         tag?: string
     ) => {
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === id) {
+                return {
+                    ...note,
+                    title: title !== undefined ? title : note.title,
+                    description: description !== undefined ? description : note.description,
+                    tag: tag !== undefined ? tag : note.tag
+                };
+            }
+            return note;
+        }));
+
+        onDirectoryUpdate?.((prev) => prev.map((item) => {
+            if (item._id === id && item.typeName === 'note') {
+                const noteItem = item as Note;
+                return {
+                    ...noteItem,
+                    title: title !== undefined ? title : noteItem.title,
+                    description: description !== undefined ? description : noteItem.description,
+                    tag: tag !== undefined ? tag : noteItem.tag
+                };
+            }
+            return item;
+        }));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/note/update-note/${id}`,
@@ -126,6 +151,14 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const moveNoteToFolder = useCallback(async (noteId: string, targetFolderId: string) => {
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, parent: targetFolderId };
+            }
+            return note;
+        }));
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== noteId));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/note/update-note/${noteId}`,
@@ -154,6 +187,14 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const removeNoteFromFolder = useCallback(async (noteId: string) => {
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, parent: null };
+            }
+            return note;
+        }));
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== noteId));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/note/update-note/${noteId}`,
@@ -182,11 +223,27 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const pinNote = useCallback(async (noteId: string) => {
+        const now = Date.now();
+
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, pinnedAt: now };
+            }
+            return note;
+        }));
+
+        onDirectoryUpdate?.((prev) => prev.map((item) => {
+            if (item._id === noteId && item.typeName === 'note') {
+                return { ...(item as Note), pinnedAt: now };
+            }
+            return item;
+        }));
+
         try {
             const payload = {
                 pinnedAt: {
                     status: true,
-                    value: Date.now(),
+                    value: now,
                 },
             };
 
@@ -221,6 +278,20 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const unpinNote = useCallback(async (noteId: string) => {
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, pinnedAt: null };
+            }
+            return note;
+        }));
+
+        onDirectoryUpdate?.((prev) => prev.map((item) => {
+            if (item._id === noteId && item.typeName === 'note') {
+                return { ...(item as Note), pinnedAt: null };
+            }
+            return item;
+        }));
+
         try {
             const payload = {
                 pinnedAt: {
@@ -259,6 +330,16 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const moveNoteToTrash = useCallback(async (noteId: string) => {
+        const nowStr = new Date().toISOString();
+
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, expireAt: nowStr, trashedAt: nowStr, pinnedAt: null };
+            }
+            return note;
+        }));
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== noteId));
+
         try {
             const payload = {
                 expireAt: { status: true },
@@ -292,6 +373,13 @@ export const useNotesState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const restoreNote = useCallback(async (noteId: string) => {
+        setAllNotes((prev) => prev.map((note) => {
+            if (note._id === noteId) {
+                return { ...note, expireAt: null, trashedAt: null };
+            }
+            return note;
+        }));
+
         try {
             const payload = { expireAt: { status: false } };
             const res = await fetchWithAuth(
@@ -322,6 +410,9 @@ export const useNotesState = (
     }, [fetchWithAuth, getDirectoryContent, isTokenExpiredError]);
 
     const deleteNotePermanently = useCallback(async (noteId: string) => {
+        setAllNotes((prev) => prev.filter((item) => item._id !== noteId));
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== noteId));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/note/delete-note/${noteId}`,

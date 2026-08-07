@@ -19,7 +19,7 @@ export const useDirectoryState = (
     const trashedNotes = useMemo(
         () => allNotes
             .filter((note): note is Note & { expireAt: string } => Boolean(note.expireAt))
-            .sort((a, b) => new Date(b.expireAt).getTime() - new Date(a.expireAt).getTime()),
+            .sort((a, b) => Date.parse(b.expireAt) - Date.parse(a.expireAt)),
         [allNotes]
     );
 
@@ -31,7 +31,7 @@ export const useDirectoryState = (
     const trashedFolders = useMemo(
         () => allFolders
             .filter((folder): folder is Folder & { expireAt: string } => Boolean(folder.expireAt))
-            .sort((a, b) => new Date(b.expireAt).getTime() - new Date(a.expireAt).getTime()),
+            .sort((a, b) => Date.parse(b.expireAt) - Date.parse(a.expireAt)),
         [allFolders]
     );
 
@@ -44,7 +44,6 @@ export const useDirectoryState = (
 
             if (data.success && Array.isArray(data.notes)) {
                 setDirectoryContent(data.notes);
-                // Optionally set folder name if returned
             } else {
                 setDirectoryContent([]);
             }

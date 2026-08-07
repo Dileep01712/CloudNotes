@@ -55,16 +55,12 @@ function App() {
   return (
     <NoteProvider>
       <div className="min-h-screen text-black bg-zinc-100">
-        <div className="sticky top-0 z-50 bg-zinc-100 px-4 sm:px-5 md:px-6 lg:px-8">
+        <div className="sticky top-0 z-50 bg-zinc-100 px-4 sm:px-5 md:px-6 lg:px-0">
           <Navbar mode={mode} setMode={setMode} showAlert={showAlert} />
-          <Alert
-            alert={alert}
-            onClose={closeAlert}
-            autoHideDuration={5000}
-          />
+          <Alert alert={alert} onClose={closeAlert} autoHideDuration={5000} />
         </div>
 
-        <main className="mx-auto w-full max-w-7xl p-4 sm:p-5 md:p-6 lg:p-8 ">
+        <main className="mx-auto w-full max-w-7xl p-4 sm:p-5 md:p-6 lg:p-0">
           <Routes>
             <Route element={<ProtectedRoute requireAuth={true} />}>
               <Route

@@ -163,10 +163,7 @@ export default function NoteItem({
 
                     <div className="flex items-center justify-between border-t border-zinc-100 pt-2 gap-1">
                         <p className="text-xs font-medium text-zinc-400 flex items-center gap-2 select-none">
-                            <FontAwesomeIcon
-                                icon={isUpdateBool ? faCalendarPlus : faCalendar}
-                                className="text-zinc-400"
-                            />
+                            <FontAwesomeIcon icon={isUpdateBool ? faCalendarPlus : faCalendar} className="text-zinc-400" />
                             {isUpdateBool ? "Updated: " : "Created: "}
                             {formatFullDateTime(isUpdateBool ? note.updatedAt : note.createdAt)}
                         </p>

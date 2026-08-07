@@ -63,6 +63,8 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const updateFolder = useCallback(async (folderId: string, title: string, parentId: string | null) => {
+        setAllFolders((prev) => prev.map(f => f._id === folderId ? { ...f, title, parent: parentId ?? undefined } : f));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/folder/update-folder/${folderId}`,
@@ -91,6 +93,11 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const pinFolder = useCallback(async (folderId: string) => {
+        const now = Date.now();
+
+        setAllFolders((prev) => prev.map((f) => (f._id === folderId ? { ...f, pinnedAt: now } : f)));
+        onDirectoryUpdate?.((prev) => prev.map((item) => (item._id === folderId ? { ...item, pinnedAt: now } : item)));
+
         try {
             const payload = {
                 pinnedAt: { status: true, value: new Date().toISOString() },
@@ -125,6 +132,9 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const unpinFolder = useCallback(async (folderId: string) => {
+        setAllFolders((prev) => prev.map((f) => (f._id === folderId ? { ...f, pinnedAt: null } : f)));
+        onDirectoryUpdate?.((prev) => prev.map((item) => (item._id === folderId ? { ...item, pinnedAt: null } : item)));
+
         try {
             const payload = {
                 pinnedAt: { status: false },
@@ -159,7 +169,9 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const onFolderColorChange = useCallback(async (targetFolder: Folder, newColor: string | null) => {
-        console.log("Color clicked! targetFolder: ", targetFolder.title, "newColor: ", newColor);
+        setAllFolders((prevFolders) => prevFolders.map((folder) => folder._id === targetFolder._id ? { ...folder, color: newColor || 'none' } : folder));
+        onDirectoryUpdate?.((prev) => prev.map((item) => item._id === targetFolder._id ? { ...item, color: newColor || 'none' } : item));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/folder/update-folder/${targetFolder._id}`,
@@ -197,6 +209,12 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError]);
 
     const moveFolderToTrash = useCallback(async (folderId: string) => {
+        const now = new Date().toISOString();
+
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== folderId));
+        setAllFolders((prev) => prev.map((f) => (f._id === folderId ? { ...f, expireAt: now, trashedAt: now, pinnedAt: null } : f)));
+        setAllNotes?.((prevNotes) => prevNotes.map((note) => note.parent === folderId ? { ...note, expireAt: now, trashedAt: now, pinnedAt: null } : note));
+
         try {
             const payload = {
                 expireAt: { status: true },
@@ -235,6 +253,9 @@ export const useFoldersState = (
     }, [fetchWithAuth, onDirectoryUpdate, isTokenExpiredError, setAllNotes]);
 
     const restoreFolder = useCallback(async (folderId: string) => {
+        setAllFolders((prev) => prev.map((f) => (f._id === folderId ? { ...f, expireAt: null, trashedAt: null } : f)));
+        setAllNotes?.((prevNotes) => prevNotes.map((note) => note.parent === folderId ? { ...note, expireAt: null, trashedAt: null } : note));
+
         try {
             const payload = {
                 expireAt: { status: false },
@@ -272,6 +293,10 @@ export const useFoldersState = (
     }, [fetchWithAuth, isTokenExpiredError, setAllNotes]);
 
     const deleteFolderPermanently = useCallback(async (folderId: string) => {
+        setAllFolders((prev) => prev.filter((item) => item._id !== folderId));
+        onDirectoryUpdate?.((prev) => prev.filter((item) => item._id !== folderId));
+        setAllNotes?.((prevNotes) => prevNotes.filter((note) => note.parent !== folderId));
+
         try {
             const res = await fetchWithAuth(
                 `${SERVER_URL}/api/folder/delete-folder/${folderId}`,

@@ -70,7 +70,7 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
 
     return (
         <div className="sticky top-0 z-50 w-full pt-6 bg-zinc-100">
-            <header className="mx-auto max-w-7xl rounded-full border border-white/40 bg-white/50 shadow-lg">
+            <header className="mx-auto max-w-7xl rounded-[2rem] border border-white/40 bg-white/50 shadow-lg">
                 <div className="flex h-16 items-center justify-between px-4 sm:px-6 md:px-8">
 
                     <Link
@@ -128,11 +128,9 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
                         })}
                     </nav>
 
-                    {/* UNAUTHENTICATED STATE */}
                     {!isAuthenticated ? (
                         <div className="flex items-center">
 
-                            {/* Unauthenticated Mobile Hamburger */}
                             <Button
                                 variant="ghost"
                                 className="sm:hidden p-2 text-zinc-700 hover:text-black cursor-pointer"
@@ -142,7 +140,6 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
                                 <FontAwesomeIcon icon={faBarsStaggered} size="lg" />
                             </Button>
 
-                            {/* Unauthenticated Mobile Modal */}
                             {isMobileMenuOpen && (
                                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:hidden">
                                     <div className="bg-white w-full rounded-2xl p-6 flex flex-col items-center gap-6 relative shadow-xl">
@@ -325,7 +322,6 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
 
                                     <hr className="w-full border-t border-zinc-200" />
 
-                                    {/* 2. Mobile Profile Section */}
                                     <div className="w-full flex flex-col items-center">
                                         <UserProfile
                                             showAlert={showAlert}
@@ -336,7 +332,6 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
 
                                     <hr className="w-full border-t border-zinc-200" />
 
-                                    {/* 3. Mobile Sign Out Button */}
                                     <Button
                                         variant="outline"
                                         onClick={() => {
@@ -350,7 +345,6 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
                                 </div>
                             </div>
 
-                            {/* Authenticated Desktop Profile & Sign Out */}
                             <div className="hidden sm:flex items-center gap-4">
                                 <UserProfile showAlert={showAlert} isOpen={isOpen} setIsOpen={setIsOpen} />
 
@@ -365,7 +359,7 @@ export default function Navbar({ mode, setMode, showAlert }: NavbarProps) {
                         </div>
                     )}
                 </div>
-            </header >
+            </header>
         </div >
     );
 }

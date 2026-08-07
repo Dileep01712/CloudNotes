@@ -144,7 +144,6 @@ export default function SignIn({ showAlert }: SignInProps) {
                         >
                             {loading ? "Signing In..." : "Sign In"}
                         </Button>
-
                     </div>
 
                     <div className="flex items-center justify-center">

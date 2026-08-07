@@ -269,6 +269,10 @@ export default function SignUp({ showAlert }: SignUpProps) {
                             <p className="mt-1 text-sm text-zinc-500 font-medium">
                                 This code expires in <span className="text-zinc-900 font-semibold">5 minutes</span>.
                             </p>
+
+                            <p className="mt-3 text-sm text-zinc-600 font-medium bg-zinc-50 inline-block px-3 py-1 rounded-md border border-zinc-200">
+                                Didn't receive it? Please check your <span className="text-zinc-900 font-semibold">spam</span> or <span className="text-zinc-900 font-semibold">junk</span> folder.
+                            </p>
                         </div>
 
                         <form className="space-y-6 flex flex-col items-center" onSubmit={handleVerifyAndSignup}>

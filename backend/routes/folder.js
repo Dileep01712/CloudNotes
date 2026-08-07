@@ -38,9 +38,9 @@ const findPath = async (id) => {
 const deleteFolderAndChildren = async (folderId) => {
     await Note.deleteMany({ parent: folderId });
     const children = await Folder.find({ parent: folderId }).lean();
-    for (const child of children) {
-        await deleteFolderAndChildren(child._id);
-    }
+
+    await Promise.all(children.map(child => deleteFolderAndChildren(child._id)));
+
     await Folder.findByIdAndDelete(folderId);
 };
 
@@ -56,6 +56,7 @@ const validateRequest = (req, res) => {
 router.get('/fetch-all-folders', fetchuser, async (req, res) => {
     try {
         const folders = await Folder.find({ user: req.user.id })
+            .select('-__v -user')
             .sort({ createdAt: -1 })
             .lean();
         res.status(200).json({ success: true, folders });
